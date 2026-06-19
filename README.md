@@ -4,6 +4,8 @@ Single-page mobile-device catalogue built with Angular 22. It implements the two
 required views (PLP and PDP), real-time filtering, product configuration, cart
 count persistence and a one-hour client-side API cache.
 
+Repository: <https://github.com/EduardoPereyra/frontendDevTest>
+
 ## Requirements
 
 - Node.js `^22.22.3`, `^24.15.0` or `>=26.0.0`
@@ -19,6 +21,7 @@ npm install
 npm start
 npm run build
 npm test
+npm run test:coverage
 npm run lint
 ```
 
@@ -31,6 +34,7 @@ The code is organised by responsibility:
 - `core/api`: typed HTTP boundary and API integration.
 - `core/cache`: generic localStorage cache with one-hour TTL and safe fallback.
 - `core/cart`: signal-based cart state persisted between routes and reloads.
+- `core/config`: injectable runtime configuration for external services.
 - `core/models`: immutable API contracts.
 - `features`: lazy-loaded product list and product detail screens.
 - `shared`: reusable presentational components.
@@ -38,7 +42,11 @@ The code is organised by responsibility:
 The app uses standalone components, signal-based local state, typed reactive
 forms, `OnPush` change detection, native control flow and lazy routes. API
 responses are cached at the service boundary, keeping caching concerns away
-from UI components.
+from UI components. API DTOs are normalized at the boundary so misspelled or
+inconsistent upstream fields never leak into the application domain.
+
+Styles follow the same ownership rule: global tokens and shared utilities remain
+in `src/styles.scss`, while each component owns its layout and responsive rules.
 
 ## Product decisions
 
@@ -53,6 +61,21 @@ from UI components.
 - Responsive grids never exceed four products per row.
 - Keyboard focus, semantic landmarks, live regions, reduced motion and a skip
   link are included for accessibility.
+- The breadcrumb remains available in compact form on mobile.
+
+## Testing strategy
+
+The suite covers:
+
+- API URLs, payloads, response normalization and cache hits.
+- Cache expiration and malformed-storage fallbacks.
+- Product filtering, empty results and load errors.
+- Product detail rendering, default selections, cart payloads and error states.
+- Persisted cart accumulation.
+
+The current suite contains 23 tests and reports more than 93% statement and line
+coverage. GitHub Actions runs lint, tests with coverage and the production build
+on every pull request and every push to `main`.
 
 ## API
 
