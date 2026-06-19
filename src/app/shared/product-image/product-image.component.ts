@@ -17,6 +17,7 @@ import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core
       }
     </div>
   `,
+  styleUrl: './product-image.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent {

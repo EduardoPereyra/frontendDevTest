@@ -15,6 +15,7 @@ import { ProductImageComponent } from '../../shared/product-image/product-image.
   selector: 'app-product-list',
   imports: [RouterLink, ProductImageComponent],
   templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {

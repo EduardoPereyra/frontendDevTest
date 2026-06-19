@@ -38,8 +38,8 @@ export function normalizeProductDetail(dto: ProductDetailDto): ProductDetail {
     displaySize: toText(dto.displaySize),
     battery: toText(dto.battery),
     primaryCamera: toTextArray(dto.primaryCamera),
-    secondaryCmera: toTextArray(dto.secondaryCmera),
-    dimentions: toText(dto.dimentions),
+    secondaryCamera: toTextArray(dto.secondaryCmera),
+    dimensions: toText(dto.dimentions),
     weight: toText(dto.weight),
     options: {
       colors: toOptions(dto.options?.colors),

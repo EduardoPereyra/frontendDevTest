@@ -1,0 +1,26 @@
+.product-image {
+  display: grid;
+  min-height: var(--product-image-min-height, 18rem);
+  place-items: center;
+  padding: 2rem;
+  background: linear-gradient(145deg, #f8f9f5, #ecefe9);
+}
+
+.product-image img {
+  display: block;
+  width: 100%;
+  height: var(--product-image-height, 15rem);
+  object-fit: contain;
+  transition: transform 220ms ease;
+}
+
+.image-unavailable {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 34rem) {
+  .product-image {
+    min-height: 16rem;
+  }
+}

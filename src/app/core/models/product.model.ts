@@ -19,8 +19,8 @@ export interface ProductDetail extends ProductSummary {
   readonly displaySize: string;
   readonly battery: string;
   readonly primaryCamera: readonly string[];
-  readonly secondaryCmera: readonly string[];
-  readonly dimentions: string;
+  readonly secondaryCamera: readonly string[];
+  readonly dimensions: string;
   readonly weight: string;
   readonly options: {
     readonly colors: readonly ProductOption[];

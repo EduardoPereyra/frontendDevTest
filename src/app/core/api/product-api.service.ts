@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { CacheService } from '../cache/cache.service';
+import { API_CONFIG } from '../config/api.config';
 import { normalizeProductDetail, ProductDetailDto } from './product-detail.mapper';
 import {
   AddToCartRequest,
@@ -14,13 +15,13 @@ import {
 export class ProductApiService {
   private readonly http = inject(HttpClient);
   private readonly cache = inject(CacheService);
-  private readonly baseUrl = 'https://itx-frontend-test.onrender.com/api';
+  private readonly config = inject(API_CONFIG);
   private readonly cacheTtlMs = 60 * 60 * 1_000;
 
   getProducts(): Observable<readonly ProductSummary[]> {
     return this.withCache(
       'products',
-      this.http.get<readonly ProductSummary[]>(`${this.baseUrl}/product`),
+      this.http.get<readonly ProductSummary[]>(`${this.config.baseUrl}/product`),
     );
   }
 
@@ -28,13 +29,13 @@ export class ProductApiService {
     return this.withCache(
       `v2:product:${id}`,
       this.http
-        .get<ProductDetailDto>(`${this.baseUrl}/product/${encodeURIComponent(id)}`)
+        .get<ProductDetailDto>(`${this.config.baseUrl}/product/${encodeURIComponent(id)}`)
         .pipe(map(normalizeProductDetail)),
     );
   }
 
   addToCart(request: AddToCartRequest): Observable<CartResponse> {
-    return this.http.post<CartResponse>(`${this.baseUrl}/cart`, request);
+    return this.http.post<CartResponse>(`${this.config.baseUrl}/cart`, request);
   }
 
   private withCache<T>(key: string, request: Observable<T>): Observable<T> {

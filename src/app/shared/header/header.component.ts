@@ -38,6 +38,7 @@ import { CartStore } from '../../core/cart/cart.store';
       </div>
     </header>
   `,
+  styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {

@@ -19,13 +19,13 @@ describe('normalizeProductDetail', () => {
     });
 
     expect(product.primaryCamera).toEqual(['13 MP', 'autofocus']);
-    expect(product.secondaryCmera).toEqual(['5 MP']);
+    expect(product.secondaryCamera).toEqual(['5 MP']);
   });
 
   it('uses safe defaults for missing optional data', () => {
     const product = normalizeProductDetail(baseProduct);
 
-    expect(product.secondaryCmera).toEqual([]);
+    expect(product.secondaryCamera).toEqual([]);
     expect(product.battery).toBe('');
   });
 });

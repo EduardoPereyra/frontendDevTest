@@ -18,6 +18,7 @@ import { ProductImageComponent } from '../../shared/product-image/product-image.
   selector: 'app-product-detail',
   imports: [ReactiveFormsModule, RouterLink, ProductImageComponent],
   templateUrl: './product-detail.component.html',
+  styleUrl: './product-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
