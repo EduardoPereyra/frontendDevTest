@@ -47,8 +47,9 @@ from UI components.
 - Loading, error, retry, empty-search and image-failure states are explicit.
 - The first storage and colour values are selected by default, including
   single-option products.
-- The cart badge consumes the count returned by `POST /api/cart` and persists it
-  in localStorage.
+- The cart API returns the quantity added (`{ "count": 1 }`) rather than the
+  accumulated total. The cart store adds that quantity to its persisted local
+  count so the badge remains correct across additions, routes and reloads.
 - Responsive grids never exceed four products per row.
 - Keyboard focus, semantic landmarks, live regions, reduced motion and a skip
   link are included for accessibility.

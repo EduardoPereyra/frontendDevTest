@@ -62,7 +62,7 @@ export class ProductDetailComponent {
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
         next: ({ count }) => {
-          this.cart.setCount(count);
+          this.cart.incrementBy(count);
           this.added.set(true);
         },
         error: () => this.submitError.set(true),
