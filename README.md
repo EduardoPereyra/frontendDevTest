@@ -85,13 +85,3 @@ The application consumes:
 - `GET https://itx-frontend-test.onrender.com/api/product/:id`
 - `POST https://itx-frontend-test.onrender.com/api/cart`
 
-## Suggested commit history
-
-For an evolutionary public repository, split the work into these milestones:
-
-1. `chore: scaffold Angular 22 application`
-2. `feat: add typed product API and expiring cache`
-3. `feat: implement responsive product catalogue and search`
-4. `feat: implement product detail and cart flow`
-5. `test: cover cache and critical user flows`
-6. `docs: document architecture and delivery decisions`
