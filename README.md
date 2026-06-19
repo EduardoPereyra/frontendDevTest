@@ -1,59 +1,73 @@
-# ItxMobileStore
+# Mobile Store - ITX Frontend Test
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.2.
+Single-page mobile-device catalogue built with Angular 22. It implements the two
+required views (PLP and PDP), real-time filtering, product configuration, cart
+count persistence and a one-hour client-side API cache.
 
-## Development server
+## Requirements
 
-To start a local development server, run:
+- Node.js `^22.22.3`, `^24.15.0` or `>=26.0.0`
+- npm 11+
 
-```bash
-ng serve
-```
+Angular 22.0.2 does not support Node 24.13 or 24.14. Check the active runtime
+with `node --version` before installing dependencies.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Commands
 
 ```bash
-ng generate component component-name
+npm install
+npm start
+npm run build
+npm test
+npm run lint
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The development server runs at <http://localhost:4200>.
 
-```bash
-ng generate --help
-```
+## Architecture
 
-## Building
+The code is organised by responsibility:
 
-To build the project run:
+- `core/api`: typed HTTP boundary and API integration.
+- `core/cache`: generic localStorage cache with one-hour TTL and safe fallback.
+- `core/cart`: signal-based cart state persisted between routes and reloads.
+- `core/models`: immutable API contracts.
+- `features`: lazy-loaded product list and product detail screens.
+- `shared`: reusable presentational components.
 
-```bash
-ng build
-```
+The app uses standalone components, signal-based local state, typed reactive
+forms, `OnPush` change detection, native control flow and lazy routes. API
+responses are cached at the service boundary, keeping caching concerns away
+from UI components.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Product decisions
 
-## Running unit tests
+- Filtering is immediate and case-insensitive across brand and model.
+- Empty prices are rendered as "Price on request" instead of malformed currency.
+- Loading, error, retry, empty-search and image-failure states are explicit.
+- The first storage and colour values are selected by default, including
+  single-option products.
+- The cart badge consumes the count returned by `POST /api/cart` and persists it
+  in localStorage.
+- Responsive grids never exceed four products per row.
+- Keyboard focus, semantic landmarks, live regions, reduced motion and a skip
+  link are included for accessibility.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## API
 
-```bash
-ng test
-```
+The application consumes:
 
-## Running end-to-end tests
+- `GET https://itx-frontend-test.onrender.com/api/product`
+- `GET https://itx-frontend-test.onrender.com/api/product/:id`
+- `POST https://itx-frontend-test.onrender.com/api/cart`
 
-For end-to-end (e2e) testing, run:
+## Suggested commit history
 
-```bash
-ng e2e
-```
+For an evolutionary public repository, split the work into these milestones:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. `chore: scaffold Angular 22 application`
+2. `feat: add typed product API and expiring cache`
+3. `feat: implement responsive product catalogue and search`
+4. `feat: implement product detail and cart flow`
+5. `test: cover cache and critical user flows`
+6. `docs: document architecture and delivery decisions`
