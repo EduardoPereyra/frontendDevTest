@@ -69,6 +69,11 @@ export class ProductDetailComponent {
       });
   }
 
+  protected formatList(values: readonly string[] | string | null | undefined): string {
+    if (Array.isArray(values)) return values.join(', ') || 'Not specified';
+    return typeof values === 'string' && values.length > 0 ? values : 'Not specified';
+  }
+
   private loadProduct(id: string): void {
     this.loading.set(true);
     this.loadError.set(false);

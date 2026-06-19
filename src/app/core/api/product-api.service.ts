@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { CacheService } from '../cache/cache.service';
+import { normalizeProductDetail, ProductDetailDto } from './product-detail.mapper';
 import {
   AddToCartRequest,
   CartResponse,
@@ -25,8 +26,10 @@ export class ProductApiService {
 
   getProduct(id: string): Observable<ProductDetail> {
     return this.withCache(
-      `product:${id}`,
-      this.http.get<ProductDetail>(`${this.baseUrl}/product/${encodeURIComponent(id)}`),
+      `v2:product:${id}`,
+      this.http
+        .get<ProductDetailDto>(`${this.baseUrl}/product/${encodeURIComponent(id)}`)
+        .pipe(map(normalizeProductDetail)),
     );
   }
 

@@ -34,8 +34,8 @@
           <div><dt>Operating system</dt><dd>{{ item.os || 'Not specified' }}</dd></div>
           <div><dt>Screen resolution</dt><dd>{{ item.displaySize || item.displayResolution }}</dd></div>
           <div><dt>Battery</dt><dd>{{ item.battery || 'Not specified' }}</dd></div>
-          <div><dt>Main camera</dt><dd>{{ item.primaryCamera.join(', ') || 'Not specified' }}</dd></div>
-          <div><dt>Front camera</dt><dd>{{ item.secondaryCmera.join(', ') || 'Not specified' }}</dd></div>
+          <div><dt>Main camera</dt><dd>{{ formatList(item.primaryCamera) }}</dd></div>
+          <div><dt>Front camera</dt><dd>{{ formatList(item.secondaryCmera) }}</dd></div>
           <div><dt>Dimensions</dt><dd>{{ item.dimentions || 'Not specified' }}</dd></div>
           <div><dt>Weight</dt><dd>{{ item.weight ? item.weight + ' g' : 'Not specified' }}</dd></div>
         </dl>
