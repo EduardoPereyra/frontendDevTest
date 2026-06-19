@@ -1,0 +1,77 @@
+<a class="back-link" routerLink="/">← Back to all products</a>
+
+@if (loading()) {
+  <div class="detail-layout" aria-label="Loading product" aria-busy="true">
+    <div class="detail-media skeleton"></div>
+    <div class="detail-content skeleton"><span></span><span></span><span></span></div>
+  </div>
+} @else if (loadError()) {
+  <section class="feedback-card" role="alert">
+    <p class="eyebrow">Product unavailable</p>
+    <h1>We couldn't load this device.</h1>
+    <p>It may no longer exist or the service may be temporarily unavailable.</p>
+    <button class="button button-primary" type="button" (click)="retry()">Try again</button>
+  </section>
+} @else if (product(); as item) {
+  <article class="detail-layout">
+    <div class="detail-media">
+      <app-product-image [src]="item.imgUrl" [alt]="item.brand + ' ' + item.model" />
+    </div>
+    <div class="detail-content">
+      <header class="detail-heading">
+        <p class="eyebrow">{{ item.brand }}</p>
+        <h1>{{ item.model }}</h1>
+        <p class="detail-price">
+          @if (item.price) { {{ item.price }} € } @else { Price on request }
+        </p>
+      </header>
+
+      <section aria-labelledby="specifications-title">
+        <h2 id="specifications-title">Technical details</h2>
+        <dl class="spec-grid">
+          <div><dt>CPU</dt><dd>{{ item.cpu || 'Not specified' }}</dd></div>
+          <div><dt>RAM</dt><dd>{{ item.ram || 'Not specified' }}</dd></div>
+          <div><dt>Operating system</dt><dd>{{ item.os || 'Not specified' }}</dd></div>
+          <div><dt>Screen resolution</dt><dd>{{ item.displaySize || item.displayResolution }}</dd></div>
+          <div><dt>Battery</dt><dd>{{ item.battery || 'Not specified' }}</dd></div>
+          <div><dt>Main camera</dt><dd>{{ item.primaryCamera.join(', ') || 'Not specified' }}</dd></div>
+          <div><dt>Front camera</dt><dd>{{ item.secondaryCmera.join(', ') || 'Not specified' }}</dd></div>
+          <div><dt>Dimensions</dt><dd>{{ item.dimentions || 'Not specified' }}</dd></div>
+          <div><dt>Weight</dt><dd>{{ item.weight ? item.weight + ' g' : 'Not specified' }}</dd></div>
+        </dl>
+      </section>
+
+      <form class="purchase-panel" [formGroup]="selectionForm" (ngSubmit)="addToCart()">
+        <h2>Choose your configuration</h2>
+        <div class="selectors">
+          <label>
+            <span>Storage</span>
+            <select formControlName="storageCode">
+              @for (storage of item.options.storages; track storage.code) {
+                <option [ngValue]="storage.code">{{ storage.name }}</option>
+              }
+            </select>
+          </label>
+          <label>
+            <span>Colour</span>
+            <select formControlName="colorCode">
+              @for (color of item.options.colors; track color.code) {
+                <option [ngValue]="color.code">{{ color.name }}</option>
+              }
+            </select>
+          </label>
+        </div>
+        <button class="button button-primary button-wide" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Adding…' : 'Add to bag' }}
+        </button>
+        <div class="form-message" aria-live="polite">
+          @if (added()) {
+            <p class="success-message">Added to your bag.</p>
+          } @else if (submitError()) {
+            <p class="error-message">We couldn't add this item. Please try again.</p>
+          }
+        </div>
+      </form>
+    </div>
+  </article>
+}

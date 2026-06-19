@@ -1,0 +1,69 @@
+<section class="hero" aria-labelledby="products-title">
+  <div>
+    <p class="eyebrow">Curated mobile technology</p>
+    <h1 id="products-title">Find your next device.</h1>
+    <p class="hero-copy">Compare a broad catalogue of phones and tablets in one place.</p>
+  </div>
+  <label class="search-field">
+    <span>Search by brand or model</span>
+    <input
+      type="search"
+      placeholder="Try Acer, Galaxy, iPhone..."
+      [value]="query()"
+      (input)="updateQuery($event)"
+      autocomplete="off"
+    />
+  </label>
+</section>
+
+<div class="results-summary" aria-live="polite">
+  @if (!loading() && !error()) {
+    <p>
+      <strong>{{ filteredProducts().length }}</strong>
+      {{ filteredProducts().length === 1 ? 'device' : 'devices' }}
+    </p>
+  }
+</div>
+
+@if (loading()) {
+  <div class="product-grid" aria-label="Loading products" aria-busy="true">
+    @for (placeholder of [1, 2, 3, 4, 5, 6, 7, 8]; track placeholder) {
+      <div class="product-card skeleton"><span></span><span></span><span></span></div>
+    }
+  </div>
+} @else if (error()) {
+  <section class="feedback-card" role="alert">
+    <p class="eyebrow">Connection issue</p>
+    <h2>We couldn't load the catalogue.</h2>
+    <p>Please check your connection and try again.</p>
+    <button class="button button-primary" type="button" (click)="retry()">Try again</button>
+  </section>
+} @else if (filteredProducts().length === 0) {
+  <section class="feedback-card">
+    <p class="eyebrow">No matches</p>
+    <h2>Nothing found for “{{ query() }}”.</h2>
+    <p>Try a different brand or model.</p>
+  </section>
+} @else {
+  <div class="product-grid">
+    @for (product of filteredProducts(); track product.id) {
+      <a class="product-card" [routerLink]="['/product', product.id]">
+        <app-product-image
+          [src]="product.imgUrl"
+          [alt]="product.brand + ' ' + product.model"
+        />
+        <div class="product-card-body">
+          <p class="product-brand">{{ product.brand }}</p>
+          <h2>{{ product.model }}</h2>
+          <p class="product-price">
+            @if (product.price) {
+              {{ product.price }} €
+            } @else {
+              Price on request
+            }
+          </p>
+        </div>
+      </a>
+    }
+  </div>
+}
